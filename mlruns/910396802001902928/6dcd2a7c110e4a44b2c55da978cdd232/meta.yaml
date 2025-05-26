@@ -1,0 +1,15 @@
+artifact_uri: file:///mlruns/910396802001902928/6dcd2a7c110e4a44b2c55da978cdd232/artifacts
+end_time: 1748232955157
+entry_point_name: ''
+experiment_id: '910396802001902928'
+lifecycle_stage: active
+run_id: 6dcd2a7c110e4a44b2c55da978cdd232
+run_name: GradientBoostingRegressor
+run_uuid: 6dcd2a7c110e4a44b2c55da978cdd232
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1748232945836
+status: 3
+tags: []
+user_id: app

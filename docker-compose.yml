@@ -1,0 +1,48 @@
+services:
+
+  trainer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: my-mlflow-base-image:latest
+    volumes:
+    - ./mlruns:/mlruns
+    command: python train.py
+
+  mlflow-ui:
+    image: my-mlflow-base-image:latest
+    #depends_on:
+    #  - trainer
+    volumes:
+      - ./mlruns:/mlruns
+    ports:
+      - "5000:5000"
+    command: mlflow ui --backend-store-uri /mlruns --host 0.0.0.0 --port 5000
+
+  model-server:
+    image: my-mlflow-base-image:latest
+    #depends_on:
+    #  - trainer
+    ports:
+      - "1234:1234"
+    volumes:
+      - ./mlruns:/mlruns
+    environment:
+      - MLFLOW_TRACKING_URI=file:///mlruns
+    command: >
+      mlflow models serve
+        -m models:/GradientBoostingModel/1
+        --host 0.0.0.0
+        --port 1234
+        --no-conda
+
+# Alternativa de mlflow-ui usando Bitnami:
+# image: bitnami/mlflow:latest
+# ports:
+#   - "5000:5000"
+# volumes:
+#   - ./mlruns:/mlruns # Este volumen es para persistir TUS datos de MLflow
+# environment:
+#   # Ambos deben apuntar al mismo lugar dentro del contenedor: el volumen persistente
+#   - MLFLOW_TRACKING_URI=file:///mlruns
+# command: mlflow ui --backend-store-uri file:///mlruns --host 0.0.0.0 --port 5000

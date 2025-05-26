@@ -1,0 +1,26 @@
+docker compose up --build trainer # construye imagen y ejecuta contenedor
+docker compose up trainer
+docker compose up mlflow-ui
+docker compose up -d model-server (-d no secuestra)
+
+docker stop $(docker ps -aq) Parar todos los contenedores.
+
+docker rm -f $(docker ps -aq) Eliminar todos los contendedores
+
+docker compose down -v  (Parar y eliminar volúmenes)
+
+
+
+
+1. Separa build de ejecución
+En lugar de hacer docker compose run trainer cada vez (que por defecto comprueba y vuelve a exportar la imagen si detecta cambios), haz:
+
+bash
+Copiar
+Editar
+docker compose build trainer     # Solo construye (caching total)
+docker compose run trainer       # Luego ejecuta sin rebuild
+
+Crear la carpeta
+mkdir -p mlruns
+sudo chown -R 1000:1000 mlruns  # Asumiendo que 'app' tiene UID 1000
